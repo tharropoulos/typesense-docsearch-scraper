@@ -17,17 +17,7 @@ jobs:
 
       - name: Set tag
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            git fetch --tags --force
-            latest_tag=$(git tag --sort=version:refname | tail -n 1)
-            if [ -z "$latest_tag" ]; then
-              echo "No git tags found; cannot determine latest tag."
-              exit 1
-            fi
-            echo "TAG=${latest_tag}" >> "$GITHUB_ENV"
-          else
-            echo "TAG=${{ github.ref_name }}" >> "$GITHUB_ENV"
-          fi
+          echo "TAG=0.12.0.rc14" >> "$GITHUB_ENV"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
