@@ -68,6 +68,20 @@ class CustomDupeFilter(RFPDupeFilter):
         debug = settings.getbool('DUPEFILTER_DEBUG')
         use_anchors = settings.getbool('DUPEFILTER_USE_ANCHORS')
         return cls(job_dir(settings), debug, use_anchors)
+        return cls(job_dir(settings), debug, use_anchors, fingerprinter=fingerprinter)
+
+    # Scrapy >=2.12 prefers from_crawler over from_settings
+    @classmethod
+    def from_crawler(cls, crawler):
+        settings = crawler.settings
+        debug = settings.getbool("DUPEFILTER_DEBUG")
+        use_anchors = settings.getbool("DUPEFILTER_USE_ANCHORS")
+        return cls(
+            job_dir(settings),
+            debug,
+            use_anchors,
+            fingerprinter=crawler.request_fingerprinter,
+        )
 
     def request_seen(self, request):
         """
